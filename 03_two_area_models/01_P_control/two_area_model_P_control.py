@@ -60,8 +60,10 @@ def del_p_L_2_func(t):
 
 # Setting up first order model to undertake simulation with odeint
 def int_power_system_sim(x_init, t,
-                         K_sg_1=1, T_sg_1=0.08, R_1=2.4, K_t_1=1, T_t_1=0.3, K_gl_1=120, T_gl_1=20,
-                         K_sg_2=1, T_sg_2=0.08, R_2=2.4, K_t_2=1, T_t_2=0.3, K_gl_2=120, T_gl_2=20,
+                         K_sg_1=1, T_sg_1=0.08, R_1=2.4, K_t_1=1,
+                         T_t_1=0.3, K_gl_1=120, T_gl_1=20,
+                         K_sg_2=1, T_sg_2=0.08, R_2=2.4, K_t_2=1,
+                         T_t_2=0.3, K_gl_2=120, T_gl_2=20,
                          T12=0.1):
     x_1_dot = (1/T_sg_1)*(K_sg_1*x_init[3] - (K_sg_1/R_1)*x_init[2] - x_init[0])
     x_2_dot = (1/T_t_1)*(K_t_1*x_init[0] - x_init[1])
