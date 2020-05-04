@@ -51,7 +51,6 @@ def main():
     x_vals_int = integrate.odeint(int_power_system_sim, x_init, t)
 
     plt.plot(t, x_vals_int[:,3])
-
     plt.xlabel('time (seconds)')
     plt.ylabel('frequency (Hertz)')
     plt.show()
