@@ -1,6 +1,9 @@
 # import requred libraries
 import random
 
+# create a common seed for testing implementations
+random.seed(0)
+
 def stochastic_signal_step(current_sig, increment=0.01, min_sig=-0.2, max_sig=0.2):
     # create random number
     rand_float = (random.random() - 0.5)

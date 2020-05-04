@@ -30,13 +30,13 @@ time_grid = t
 simulation = np.zeros(t.shape[0])
 
 # time instances when load change occurs
-#load_change = int(30/delta_t)              # every 30 seconds
+load_change = int(30/delta_t)              # every 30 seconds
 #load_change = 1000                         # every 10 seconds
-load_change = 500                           # every 05 seconds
+#load_change = 500                           # every 05 seconds
 
 # create simulation
 for i in range(1, len(simulation)):
-    if (i % load_change == 0) or (i == 100):
+    if (i % load_change == 0):
         simulation[i] = stochastic_signal_step(simulation[i-1])
     else:
         simulation[i] = simulation[i-1]
@@ -53,17 +53,7 @@ x_init = (x_1_0, x_2_0, x_3_0, x_4_0)
 # Setting up step function for power change
 # Note that for the purposes of DRL this could be any signal
 def del_p_L_func(t):
-
     idx = np.digitize(t, time_grid)
-
-    '''
-    if (t < 1):
-        del_p_L = 0.00
-    elif (1 <= t < 5):
-        del_p_L = 0.2
-    else:
-        del_p_L = -0.2
-    '''
     return simulation[idx-1]
 
 # Setting up first order model to undertake simulation with odeint
