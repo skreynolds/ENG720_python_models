@@ -49,10 +49,10 @@ def int_control_system_sim(x_control_sys, t,
                            R_2, K_i_2, b_2):                            # area two
 
     # controller 1 simulation
-    x_1_dot = K_i_1*(x_control_sys[4] + b_1*x_control_sys[3])
+    x_1_dot = K_i_1*(tie_line_sig + b_1*frequency_sig_1)
 
     # controller 2 simulation
-    x_6_dot = K_i_2*(-x_control_sys[4] + b_2*x_control_sys[8])
+    x_6_dot = K_i_2*(-tie_line_sig + b_2*frequency_sig_2)
 
     return x_1_dot, x_6_dot
 
@@ -103,12 +103,12 @@ def main():
     x_1_0 = 0.0     # x_control_sys[0]
     x_2_0 = 0.0     # x_sys[0]
     x_3_0 = 0.0     # x_sys[1]
-    x_4_0 = 0.0     # x_sys[2]
+    x_4_0 = 0.0     # x_freq_1
     x_5_0 = 0.0     # x_sys[3]
     x_6_0 = 0.0     # x_control_sys[1]
     x_7_0 = 0.0     # x_sys[4]
     x_8_0 = 0.0     # x_sys[5]
-    x_9_0 = 0.0     # x_sys[6]
+    x_9_0 = 0.0     # x_freq_2
 
     x_sys = (x_2_0, x_3_0, x_4_0, x_5_0, x_7_0, x_8_0, x_9_0)   # initialise sys
     x_freq_1 = x_4_0                                            # initialise freq_1
@@ -191,8 +191,8 @@ def main():
         t = t_step
         time.append(t)
 
-    plt.plot(t, out_s_1)
-    plt.plot(t, out_s_2)
+    plt.plot(time, out_s_1)
+    plt.plot(time, out_s_2)
     plt.show()
 
 # Execute the main() function if run from the terminal
