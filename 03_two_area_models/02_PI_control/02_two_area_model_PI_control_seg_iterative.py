@@ -125,11 +125,12 @@ def main():
     t = 0
     time = [t]
 
-    while t < t_max:
+    '''while t < t_max:'''
+    for _ in range(10):
 
         # step foward in time
         t_step = t + delta_t
-
+        print(x_control)
         ##############################################################
         # step the system simulation forward in time
         ##############################################################
@@ -158,7 +159,7 @@ def main():
         # create new x_sys
         x_sys = (x_2, x_3, x_freq_1, x_tie_line, x_7, x_8, x_freq_2)
         ##############################################################
-
+        print(x_sys)
         ##############################################################
         # step the control simulation forward in time
         ##############################################################

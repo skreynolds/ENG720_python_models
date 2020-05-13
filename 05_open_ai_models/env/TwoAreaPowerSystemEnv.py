@@ -5,6 +5,7 @@ from gym import spaces
 from gym.utils import seeding
 from scipy import integrate
 
+
 # specify the environment for two area power system
 class TwoAreaPowerSystemEnv(gym.Env):
 	"""
@@ -78,13 +79,11 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		# set up the state space
 		self.state = None
 
-		# Clean up the agent
-		self.reset()
-
 
 	def seed(self, seed=None):
 		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
+	
 
 	def del_p_L_1_func(self, t):
 		if (t < 1):
@@ -92,6 +91,7 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		else:
 			del_p_L = 0.01
 		return del_p_L
+
 
 	def del_p_L_2_func(self, t):
 		if (t < 1):
@@ -119,8 +119,8 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		x_8_dot = (1/T_t_2)*(K_t_2*x_sys[4] - x_sys[5])
 		x_9_dot = (K_gl_2/T_gl_2)*(x_sys[5] + x_sys[3] - self.del_p_L_2_func(t)) - (1/T_gl_2)*x_sys[6]
 
-		return (x_2_dot, x_3_dot, x_4_dot, x_5_dot, x_7_dot, x_8_dot, x_9_dot)
-
+		return x_2_dot, x_3_dot, x_4_dot, x_5_dot, x_7_dot, x_8_dot, x_9_dot
+	
 
 	def step(self, action):
 		"""
@@ -130,7 +130,6 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		# store the received control signals
 		control_sig_1, control_sig_2 = action
 
-
 		# create the argument tuple
 		arg_sys = (control_sig_1, control_sig_2,
 				   self.K_sg_1, self.T_sg_1, self.K_t_1, self.T_t_1, self.K_gl_1, self.T_gl_1,
@@ -138,10 +137,18 @@ class TwoAreaPowerSystemEnv(gym.Env):
 				   self.T12)
 
 		# step the ode system forward in time once pdate the state
-		self.state = integrate.odeint(self.int_power_system_sim,
+		x_sys_vals = integrate.odeint(self.int_power_system_sim,
 									  self.state,
-									  np.array([self.t, self.t + self.t_max]),
+									  np.array([self.t, self.t + self.t_delta]),
 									  args=arg_sys)
+
+		self.state = (x_sys_vals[1,0],
+					  x_sys_vals[1,1],
+					  x_sys_vals[1,2],	# state[2] frequency 1
+					  x_sys_vals[1,3],	# state[3] tieline
+					  x_sys_vals[1,4],
+					  x_sys_vals[1,5],
+					  x_sys_vals[1,6])	# state[6] frequency 2
 
 		# step time forward
 		self.t += self.t_delta
@@ -153,6 +160,8 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		# provide the reward signal
 		if not done:
 			reward = 0.1
+		else:
+			reward = 0.0
 
 
 		return np.array(self.state), reward, done, {}
@@ -164,4 +173,5 @@ class TwoAreaPowerSystemEnv(gym.Env):
 	############################################
 	def reset(self):
 		self.state = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+		self.t = 0
 		return np.array(self.state)
