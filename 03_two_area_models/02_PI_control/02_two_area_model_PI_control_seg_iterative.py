@@ -145,6 +145,18 @@ def main():
                                       x_sys,                        # initial cond
                                       np.array([t, t_step]),        # time step
                                       args=arg_sys)                 # model args
+        
+        # save the new init values for the system
+        x_2 = x_sys_vals[1,0]
+        x_3 = x_sys_vals[1,1]
+        x_freq_1 = x_sys_vals[1,2]      # (area 1 frequency)
+        x_tie_line = x_sys_vals[1,3]    # (tie line power)
+        x_7 = x_sys_vals[1,4]
+        x_8 = x_sys_vals[1,5]
+        x_freq_2 = x_sys_vals[1,6]      # (area 2 frequency)
+
+        # create new x_sys
+        x_sys = (x_2, x_3, x_freq_1, x_tie_line, x_7, x_8, x_freq_2)
         ##############################################################
 
         ##############################################################
@@ -162,26 +174,14 @@ def main():
                                           x_control_sys,            # initial cond
                                           np.array([t, t_step]),    # time step
                                           args=arg_control)         # model args
-        ##############################################################
-
-        # save the new init values for the system
-        x_2 = x_sys_vals[1,0]
-        x_3 = x_sys_vals[1,1]
-        x_freq_1 = x_sys_vals[1,2]      # (area 1 frequency)
-        x_tie_line = x_sys_vals[1,3]    # (tie line power)
-        x_7 = x_sys_vals[1,4]
-        x_8 = x_sys_vals[1,5]
-        x_freq_2 = x_sys_vals[1,6]      # (area 2 frequency)
-
-        # create new x_sys
-        x_sys = (x_2, x_3, x_freq_1, x_tie_line, x_7, x_8, x_freq_2)
-
+        
         # save the new init values for the controller
         x_control_sys = (x_control_vals[1,0], x_control_vals[1,1])
 
         # create new x_control
         x_control = (x_control_sys[0] - (1/R_1)*x_freq_1,
                      x_control_sys[1] - (1/R_2)*x_freq_2)
+        ##############################################################
 
         # save the output
         out_s_1.append(x_freq_1)

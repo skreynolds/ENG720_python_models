@@ -20,6 +20,9 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		# inheret env class methods
 		super(TwoAreaPowerSystemEnv, self).__init__()
 
+		############################################
+		# Set model parameters
+		############################################
 		# Set model constants for area 1
 		self.K_sg_1 = 1
 		self.T_sg_1 = 0.08
@@ -39,6 +42,7 @@ class TwoAreaPowerSystemEnv(gym.Env):
 
     	# Synchronising coefficient on tie line
 		self.T12 = 0.1
+		############################################
 
 		############################################
 		# Define the observation space
@@ -95,8 +99,8 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		else:
 			del_p_L = 0.00
 		return del_p_L
+	
 
-	# Setting up first order model for power system
 	def int_power_system_sim(self, x_sys, t,
 							 control_sig_1, control_sig_2,                  # control sig
 							 K_sg_1, T_sg_1, K_t_1, T_t_1, K_gl_1, T_gl_1,  # area one
@@ -115,17 +119,49 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		x_8_dot = (1/T_t_2)*(K_t_2*x_sys[4] - x_sys[5])
 		x_9_dot = (K_gl_2/T_gl_2)*(x_sys[5] + x_sys[3] - self.del_p_L_2_func(t)) - (1/T_gl_2)*x_sys[6]
 
-		return x_2_dot, x_3_dot, x_4_dot, x_5_dot, x_7_dot, x_8_dot, x_9_dot
+		return (x_2_dot, x_3_dot, x_4_dot, x_5_dot, x_7_dot, x_8_dot, x_9_dot)
 
-	def step(self, action, t):
+
+	def step(self, action):
 		"""
 		Step the system forward by a single time step
 		"""
-		control_sig_1, control_sig_2 = action
 		
+		# store the received control signals
+		control_sig_1, control_sig_2 = action
+
+
+		# create the argument tuple
+		arg_sys = (control_sig_1, control_sig_2,
+				   self.K_sg_1, self.T_sg_1, self.K_t_1, self.T_t_1, self.K_gl_1, self.T_gl_1,
+				   self.K_sg_2, self.T_sg_2, self.K_t_2, self.T_t_2, self.K_gl_2, self.T_gl_2,
+				   self.T12)
+
+		# step the ode system forward in time once pdate the state
+		self.state = integrate.odeint(self.int_power_system_sim,
+									  self.state,
+									  np.array([self.t, self.t + self.t_max]),
+									  args=arg_sys)
+
+		# step time forward
+		self.t += self.t_delta
+
+		# set the done status if the time period has elapsed
+		done = (self.t > self.t_max)
+		done = bool(done)
+
+		# provide the reward signal
+		if not done:
+			reward = 0.1
+
+
+		return np.array(self.state), reward, done, {}
 
 
 
+	############################################
+	# Reset the agent
+	############################################
 	def reset(self):
 		self.state = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 		return np.array(self.state)
