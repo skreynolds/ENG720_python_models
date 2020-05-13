@@ -48,13 +48,13 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		############################################
 		# Define the observation space
 		############################################
-		# position 1 is 
-		# position 2 is 
-		# position 3 is 
-		# position 4 is 
-		# position 5 is 
-		# position 6 is 
-		# position 7 is 
+		# position 1 is x2
+		# position 2 is x3
+		# position 3 is frequency for area 1
+		# position 4 is tieline
+		# position 5 is x4
+		# position 6 is x5
+		# position 7 is frequency for area 2
 		obs_high = np.ones(7)*np.finfo(np.float32).max
 		self.observation_space = spaces.Box(-obs_high, obs_high, dtype=np.float32)
 		############################################
