@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from gym import spaces
 from gym.utils import seeding
-from env.TwoAreaPowerSystemEnv import TwoAreaPowerSystemEnv
+from env.TwoAreaPowerSystemEnvWithSignal import TwoAreaPowerSystemEnvWithSignal
 from agent.ClassicalPiController import ClassicalPiController
 from scipy import integrate
 
@@ -18,7 +18,7 @@ def main():
 	# Create the environment
 	####################################
 	# spin up environment
-	env = TwoAreaPowerSystemEnv()
+	env = TwoAreaPowerSystemEnvWithSignal()
 
 	# reset the agent
 	state = env.reset()
