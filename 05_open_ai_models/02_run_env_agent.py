@@ -8,22 +8,35 @@ import matplotlib.pyplot as plt
 from gym import spaces
 from gym.utils import seeding
 from env.TwoAreaPowerSystemEnv import TwoAreaPowerSystemEnv
+from agent.ClassicalPiController import ClassicalPiController
 from scipy import integrate
 
 
 def main():
 	
+	####################################
+	# Create the environment
+	####################################
 	# spin up environment
 	env = TwoAreaPowerSystemEnv()
 
 	# reset the agent
 	state = env.reset()
-	
-	print(env.action_space)
-	print(env.observation_space)
-	print(env.t)
+	####################################
 
+	# View the action space and the state space
+	print("Action space: {}".format(env.action_space))
+	print("State space: {}".format(env.observation_space))
+
+	####################################
+	# Create the controller
+	####################################
 	# implement controller
+	agent = ClassicalPiController()
+
+	# reset the controller
+	action = agent.reset()
+	####################################
 
 	# initialise empty list to store simulation output
 	out_s_1 = [0]
@@ -32,7 +45,8 @@ def main():
 
 	while True:
 
-		state, reward, done, _ = env.step(x_control)
+		# Step the environment forward by one step
+		state, reward, done, _ = env.step(action)
 
 		out_s_1.append(state[2])
 		out_s_2.append(state[6])
@@ -41,7 +55,8 @@ def main():
 		if done:
 			break
 
-		# implement controller
+		# Given the current state observation take an action
+		action = agent.act(state, (env.t, env.t + env.t_delta))
 
 	plt.plot(time, out_s_1)
 	plt.plot(time, out_s_2)

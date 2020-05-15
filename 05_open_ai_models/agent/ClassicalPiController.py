@@ -54,7 +54,9 @@ class ClassicalPiController():
 		state	: a tuple (freq_1, freq_2, tieline)
 		t 		: a tuple (current time step, current time step plus delta)
 		"""
-		freq_1, freq_2, tieline = state
+		freq_1 = state[2]
+		freq_2 = state[6]
+		tieline = state[3]
 
 		t, t_step = t
 
