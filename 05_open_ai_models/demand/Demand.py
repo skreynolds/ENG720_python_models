@@ -15,7 +15,7 @@ class StepSignal():
 		"""
 
 		self.area_one = area_one
-		self.step_size_one = 0.01
+		self.step_size_one = step_size_one
 
 		self.area_two = area_two
 		self.step_size_two = step_size_two
@@ -30,15 +30,17 @@ class StepSignal():
 				del_p_L = self.step_size_one
 		else:
 			del_p_L = 0.0
+		
 		return del_p_L
 
 
 	def del_p_L_2_func(self, t):
 		if self.area_two == 'on':
 			if t < 1:
-				del_p_L = 0.00
+				del_p_L = 0.0
 			else:
 				del_p_L = self.step_size_two
 		else:
 			del_p_L = 0.0
-		return del_p_L 
+		
+		return del_p_L
