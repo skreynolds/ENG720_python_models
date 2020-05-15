@@ -7,7 +7,7 @@ from scipy import integrate
 
 
 # specify the environment for two area power system
-class TwoAreaPowerSystemEnv(gym.Env):
+class TwoAreaPowerSystemEnvWithSignal(gym.Env):
 	"""
 	A simulation of a two area power system for frequency control
 	problems
@@ -19,7 +19,7 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		"""
 		
 		# inheret env class methods
-		super(TwoAreaPowerSystemEnv, self).__init__()
+		super(TwoAreaPowerSystemEnvWithSignal, self).__init__()
 
 		############################################
 		# Set model parameters

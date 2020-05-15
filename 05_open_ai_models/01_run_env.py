@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from gym import spaces
 from gym.utils import seeding
-from env.TwoAreaPowerSystemEnv import TwoAreaPowerSystemEnv
+from env.TwoAreaPowerSystemEnvWithSignal import TwoAreaPowerSystemEnvWithSignal
 from scipy import integrate
 
 # Setting up first order model for controller
@@ -29,14 +29,10 @@ def int_control_system_sim(x_control_sys, t,
 def main():
 	
 	# spin up environment
-	env = TwoAreaPowerSystemEnv()
+	env = TwoAreaPowerSystemEnvWithSignal()
 
 	# reset the agent
 	state = env.reset()
-	
-	print(env.action_space)
-	print(env.observation_space)
-	print(env.t)
 
 	# set controller parameters
 	K_i_1 = -0.671
