@@ -11,13 +11,15 @@ class TwoAreaPowerSystemEnv(gym.Env):
 	"""
 	A simulation of a two area power system for frequency control
 	problems
+    Observation space:
+    Action space:
 	"""
-	
+
 	def __init__(self):
 		"""
 		Initialise the environment
 		"""
-		
+
 		# inheret env class methods
 		super(TwoAreaPowerSystemEnv, self).__init__()
 
@@ -25,48 +27,29 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		# Set model parameters
 		############################################
 		# Set model constants for area 1
-		self.K_sg_1 = 1
-		self.T_sg_1 = 0.08
-		self.K_t_1 = 1
-		self.T_t_1 = 0.3
-		self.K_gl_1 = 120
-		self.T_gl_1 = 20
+		self.K_sg_1 = 1, self.T_sg_1 = 0.08   # governor parameters
+		self.K_t_1 = 1, self.T_t_1 = 0.3      # turbine parameters
+		self.K_gl_1 = 120, self.T_gl_1 = 20   # generator-load parameters
 
     	# Set model constants for area 2
-		self.K_sg_2 = 1
-		self.T_sg_2 = 0.08
-		self.R_2 = 2.4
-		self.K_t_2 = 1
-		self.T_t_2 = 0.3
-		self.K_gl_2 = 120
-		self.T_gl_2 = 20
+		self.K_sg_2 = 1, self.T_sg_2 = 0.08   # governor parameters
+		self.K_t_2 = 1, self.T_t_2 = 0.3      # turbine parameters
+		self.K_gl_2 = 120, self.T_gl_2 = 20   # generator-load parameters
 
     	# Synchronising coefficient on tie line
 		self.T12 = 0.1
-		############################################
 
 		############################################
 		# Define the observation space
 		############################################
-		# position 1 is x2
-		# position 2 is x3
-		# position 3 is frequency for area 1
-		# position 4 is tieline
-		# position 5 is x4
-		# position 6 is x5
-		# position 7 is frequency for area 2
 		obs_high = np.ones(7)*np.finfo(np.float32).max
 		self.observation_space = spaces.Box(-obs_high, obs_high, dtype=np.float32)
-		############################################
 
 		############################################
 		# Define action space
 		############################################
-		# position 1 is control action for area 1
-		# position 2 is control action for area 2
 		act_high = np.ones(2)*np.finfo(np.float32).max
 		self.action_space = spaces.Box(-act_high, act_high, dtype=np.float32)
-		############################################
 
 		############################################
 		# Define temporal characteristics
@@ -81,9 +64,12 @@ class TwoAreaPowerSystemEnv(gym.Env):
 
 
 	def seed(self, seed=None):
-		self.np_random, seed = seeding.np_random(seed)
+        """
+        Set the random seed
+        """
+        self.np_random, seed = seeding.np_random(seed)
 		return [seed]
-	
+
 
 	def int_power_system_sim(self, x_sys, t,
 							 control_sig_1, control_sig_2,                  # control sig
@@ -105,13 +91,22 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		x_9_dot = (K_gl_2/T_gl_2)*(x_sys[5] + x_sys[3] - power_demand_sig_2) - (1/T_gl_2)*x_sys[6]
 
 		return x_2_dot, x_3_dot, x_4_dot, x_5_dot, x_7_dot, x_8_dot, x_9_dot
-	
+
 
 	def step(self, action, demand):
 		"""
 		Step the system forward by a single time step
+
+        Inputs:
+        - action:
+        - demand:
+
+        Outputs:
+        - state:
+        - reward:
+        - done:
 		"""
-		
+
 		# store the received control signals
 		control_sig_1, control_sig_2 = action
 
