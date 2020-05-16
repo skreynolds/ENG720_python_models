@@ -72,15 +72,26 @@ class TwoAreaPowerSystemEnv(gym.Env):
 
 
 	def int_power_system_sim(self, x_sys, t,
-							 control_sig_1, control_sig_2,                  # control sig
-							 power_demand_sig_1, power_demand_sig_2,		# power demand
-							 K_sg_1, T_sg_1, K_t_1, T_t_1, K_gl_1, T_gl_1,  # area one
-							 K_sg_2, T_sg_2, K_t_2, T_t_2, K_gl_2, T_gl_2,  # area two
-							 T12):                                          # tie line
-	    # area 1 simulation
+							 control_sig_1, control_sig_2,
+							 power_demand_sig_1, power_demand_sig_2,
+							 K_sg_1, T_sg_1, K_t_1, T_t_1, K_gl_1, T_gl_1,
+							 K_sg_2, T_sg_2, K_t_2, T_t_2, K_gl_2, T_gl_2,
+							 T12):
+	    """
+        Inputs
+        control sig
+        power demand
+        power demand
+        area one
+        area two
+        tie line
+        """
+
+        # area 1 simulation
 		x_2_dot = (1/T_sg_1)*(K_sg_1*control_sig_1 - x_sys[0])
 		x_3_dot = (1/T_t_1)*(K_t_1*x_sys[0] - x_sys[1])
-		x_4_dot = (K_gl_1/T_gl_1)*(x_sys[1] - x_sys[3] - power_demand_sig_1) - (1/T_gl_1)*x_sys[2]
+		x_4_dot = (K_gl_1/T_gl_1)*(x_sys[1] - x_sys[3] - power_demand_sig_1) - \
+                        (1/T_gl_1)*x_sys[2]
 
 	    # tie line simulation
 		x_5_dot = 2*np.pi*T12*(x_sys[2] - x_sys[6])
@@ -88,7 +99,8 @@ class TwoAreaPowerSystemEnv(gym.Env):
 	    # area 2 simulation
 		x_7_dot = (1/T_sg_2)*(K_sg_2*control_sig_2 - x_sys[4])
 		x_8_dot = (1/T_t_2)*(K_t_2*x_sys[4] - x_sys[5])
-		x_9_dot = (K_gl_2/T_gl_2)*(x_sys[5] + x_sys[3] - power_demand_sig_2) - (1/T_gl_2)*x_sys[6]
+		x_9_dot = (K_gl_2/T_gl_2)*(x_sys[5] + x_sys[3] - power_demand_sig_2) - \
+                        (1/T_gl_2)*x_sys[6]
 
 		return x_2_dot, x_3_dot, x_4_dot, x_5_dot, x_7_dot, x_8_dot, x_9_dot
 
