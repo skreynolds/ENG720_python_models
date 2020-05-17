@@ -44,12 +44,18 @@ def main():
 	####################################
 	# implement the signal
 	signal = StepSignal()
+	signal.reset(1, 'on', 0.01, 'off', 0.0)
 	####################################
 
 	# initialise empty list to store simulation output
 	out_s_1 = [0]
 	out_s_2 = [0]
+	out_tieline = [0]
+	control_s_1 = [0]
+	control_s_2 = [0]
 	time = [0]
+
+	score = 0
 
 	while True:
 
@@ -60,18 +66,37 @@ def main():
 		# Step the environment forward by one step
 		state, reward, done, _ = env.step(action, demand)
 
+		score += reward
+
 		out_s_1.append(state[2])
 		out_s_2.append(state[6])
+		out_tieline.append(state[3])
 		time.append(env.t)
-
-		if done:
-			break
 
 		# Given the current state observation take an action
 		action = agent.act(state, (env.t, env.t + env.t_delta))
 
+		control_s_1.append(action[0])
+		control_s_2.append(action[1])
+
+		if done:
+			break
+
+	print('Score: {}'.format(score))
+
+	plt.subplot(411)
 	plt.plot(time, out_s_1)
 	plt.plot(time, out_s_2)
+
+	plt.subplot(412)
+	plt.plot(time, out_tieline)
+
+	plt.subplot(413)
+	plt.plot(time, control_s_1)
+
+	plt.subplot(414)
+	plt.plot(time, control_s_2)
+
 	plt.show()
 
 

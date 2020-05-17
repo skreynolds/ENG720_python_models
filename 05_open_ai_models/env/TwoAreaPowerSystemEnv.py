@@ -27,14 +27,14 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		# Set model parameters
 		############################################
 		# Set model constants for area 1
-		self.K_sg_1 = 1, self.T_sg_1 = 0.08   # governor parameters
-		self.K_t_1 = 1, self.T_t_1 = 0.3      # turbine parameters
-		self.K_gl_1 = 120, self.T_gl_1 = 20   # generator-load parameters
+		self.K_sg_1, self.T_sg_1 = 1, 0.08   # governor parameters
+		self.K_t_1, self.T_t_1 = 1, 0.3      # turbine parameters
+		self.K_gl_1, self.T_gl_1 = 120, 20   # generator-load parameters
 
     	# Set model constants for area 2
-		self.K_sg_2 = 1, self.T_sg_2 = 0.08   # governor parameters
-		self.K_t_2 = 1, self.T_t_2 = 0.3      # turbine parameters
-		self.K_gl_2 = 120, self.T_gl_2 = 20   # generator-load parameters
+		self.K_sg_2, self.T_sg_2 = 1, 0.08   # governor parameters
+		self.K_t_2, self.T_t_2 = 1, 0.3      # turbine parameters
+		self.K_gl_2, self.T_gl_2 = 120, 20   # generator-load parameters
 
     	# Synchronising coefficient on tie line
 		self.T12 = 0.1
@@ -64,10 +64,10 @@ class TwoAreaPowerSystemEnv(gym.Env):
 
 
 	def seed(self, seed=None):
-        """
+		"""
         Set the random seed
         """
-        self.np_random, seed = seeding.np_random(seed)
+		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
 
 
@@ -77,17 +77,17 @@ class TwoAreaPowerSystemEnv(gym.Env):
 							 K_sg_1, T_sg_1, K_t_1, T_t_1, K_gl_1, T_gl_1,
 							 K_sg_2, T_sg_2, K_t_2, T_t_2, K_gl_2, T_gl_2,
 							 T12):
-	    """
-        Inputs
-        control sig
-        power demand
-        power demand
-        area one
-        area two
-        tie line
-        """
+		"""
+		Inputs
+		control sig
+		power demand
+		power demand
+		area one
+		area two
+		tie line
+		"""
 
-        # area 1 simulation
+		# area 1 simulation
 		x_2_dot = (1/T_sg_1)*(K_sg_1*control_sig_1 - x_sys[0])
 		x_3_dot = (1/T_t_1)*(K_t_1*x_sys[0] - x_sys[1])
 		x_4_dot = (K_gl_1/T_gl_1)*(x_sys[1] - x_sys[3] - power_demand_sig_1) - \
@@ -154,11 +154,10 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		done = bool(done)
 
 		# provide the reward signal
-		if not done:
-			reward = 0.1
-		else:
-			reward = 0.0
-
+		
+		reward =  - ( (self.state[2])**2 + control_sig_1**2
+				  	+ (self.state[3])**2 + control_sig_2**2 
+				  	+ (self.state[6])**2 )
 
 		return np.array(self.state), reward, done, {}
 
