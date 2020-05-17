@@ -34,10 +34,17 @@ class ClassicalPiController():
 
 
 	def int_control_system_sim(self, x_control_sys, t,
-                           	   frequency_sig_1, frequency_sig_2,    # freq sig
-                               tie_line_sig,                        # tie line sig
-                               R_1, K_i_1, b_1,                     # area one
-                               R_2, K_i_2, b_2):                    # area two
+                           	   frequency_sig_1, frequency_sig_2,
+                               tie_line_sig,
+                               R_1, K_i_1, b_1,
+                               R_2, K_i_2, b_2):
+		"""
+		Inputs
+		freq sig
+		tie line sig
+		area one
+		area two
+		"""
 
     	# controller 1 simulation
 		x_1_dot = K_i_1*(tie_line_sig + b_1*frequency_sig_1)
@@ -70,7 +77,7 @@ class ClassicalPiController():
                                           self.controller_sys,            # initial cond
 										  np.array([t, t_step]),   		  # time step
                                           args=arg_control)         	  # model args
-        
+
         # update the state of the controller
 		self.controller_sys = (x_control_vals[1,0],
 							   x_control_vals[1,1])

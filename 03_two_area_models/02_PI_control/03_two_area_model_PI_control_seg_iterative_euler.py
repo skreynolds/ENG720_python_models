@@ -1,6 +1,7 @@
 
 #Import libraries required for modelling
 import numpy as np
+import time
 from scipy import integrate
 import matplotlib.pyplot as plt
 
@@ -123,7 +124,7 @@ def main():
 
     # initialise the time
     t = 0
-    time = [t]
+    time_list = [t]
 
     while t < t_max:
 
@@ -169,11 +170,16 @@ def main():
                        R_1, K_i_1, b_1,         # area one
                        R_2, K_i_2, b_2)
 
+        t0 = time.time()
+
         # time step simulation
         x_control_vals = integrate.odeint(int_control_system_sim,   # ode system
                                           x_control_sys,            # initial cond
                                           np.array([t, t_step]),    # time step
                                           args=arg_control)         # model args
+
+        t1 = time.time()
+        if (len(time_list) % 100 == 0): print(t1 - t0)
 
         # save the new init values for the controller
         x_control_sys = (x_control_vals[1,0], x_control_vals[1,1])
@@ -189,10 +195,10 @@ def main():
 
         # ste t to the next time step
         t = t_step
-        time.append(t)
+        time_list.append(t)
 
-    plt.plot(time, out_s_1)
-    plt.plot(time, out_s_2)
+    plt.plot(time_list, out_s_1)
+    plt.plot(time_list, out_s_2)
     plt.show()
 
 # Execute the main() function if run from the terminal
