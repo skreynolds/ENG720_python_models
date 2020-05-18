@@ -150,15 +150,20 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		self.t += self.t_delta
 
 		# set the done status if the time period has elapsed
-		done = (self.t > self.t_max)
+		done = (self.t > self.t_max) or (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75)
 		done = bool(done)
 
 		# provide the reward signal
 		
-		reward =  - ( (self.state[2])**2 + control_sig_1**2
-				  	+ (self.state[3])**2 + control_sig_2**2 
-				  	+ (self.state[6])**2 )
-
+		if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
+			reward = -50000*(abs(self.state[2]) + abs(self.state[6]))
+		else:
+			reward =  - 10*( abs(self.state[2])
+				  	 	   + abs(self.state[3])
+				  	 	   + abs(self.state[6]) )
+		
+		
+		
 		return np.array(self.state), reward, done, {}
 
 

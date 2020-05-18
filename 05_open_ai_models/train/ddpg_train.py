@@ -22,9 +22,11 @@ def ddpg_train(env, agent, signal, n_episodes=10000, print_every=100):
 		
 		out_s_1 = [0]
 		out_s_2 = [0]
+		out_tieline = [0]
 		control_s_1 = [0]
 		control_s_2 = [0]
-		time = [0]
+		demand_list = [0]
+		time_list = [0]
 
 		score = 0
 
@@ -34,15 +36,17 @@ def ddpg_train(env, agent, signal, n_episodes=10000, print_every=100):
 			# take control action
 			action = agent.act(state)
 
-			out_s_1.append(state[2])
-			out_s_2.append(state[6])
-			time.append(env.t)
-			control_s_1.append(action[0])
-			control_s_2.append(action[1])
-
 			# determine demand
 			demand = (signal.del_p_L_1_func(env.t),
 					  signal.del_p_L_2_func(env.t))
+
+			out_s_1.append(state[2])
+			out_s_2.append(state[6])
+			out_tieline.append(state[3])
+			control_s_1.append(action[0])
+			control_s_2.append(action[1])
+			demand_list.append(demand[0])
+			time_list.append(env.t)
 			
 			# step environment forward in time
 			next_state, reward, done, _ = env.step(action, demand)
@@ -75,20 +79,26 @@ def ddpg_train(env, agent, signal, n_episodes=10000, print_every=100):
 
 		if i_episode % 50 == 0:
 			
-			plt.subplot(311)
-			plt.plot(time, out_s_1)
-			plt.plot(time, out_s_2)
+			plt.subplot(511)
+			plt.plot(time_list, out_s_1)
+			plt.plot(time_list, out_s_2)
 
-			plt.subplot(312)
-			plt.plot(time, control_s_1)
+			plt.subplot(512)
+			plt.plot(time_list, out_tieline)
 
-			plt.subplot(313)
-			plt.plot(time, control_s_2)
+			plt.subplot(513)
+			plt.plot(time_list, control_s_1)
+
+			plt.subplot(514)
+			plt.plot(time_list, control_s_2)
+
+			plt.subplot(515)
+			plt.plot(time_list, demand_list)
 
 			plt.savefig('plot_{}.png'.format(i_episode))
 			plt.clf()
 
-		if np.mean(scores_deque) > 20.0:
+		if np.mean(scores_deque) > -100.0:
 			break
 
 	return scores

@@ -25,25 +25,26 @@ def main():
 	# spin up environment
 	env = TwoAreaPowerSystemEnv()
 	env.seed(2)
+	state = env.reset()
 
 	# spin up agent
 	agent = DdpgController(state_size=7, action_size=2, random_seed=2)
 
 	# spin up the power demand signal
 	signal = StepSignal()
+	signal.reset(1 , 'on', 0.01 , 'off', 0.0)
 
 	# Load the actor and critic networks
 	agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
 	agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
-
-	state = env.reset()
 
 	# initialise empty list to store simulation output
 	out_s_1 = [0]
 	out_s_2 = [0]
 	control_s_1 = [0]
 	control_s_2 = [0]
-	time = [0]
+	demand_list = [0]
+	time_list = [0]
 
 	score = 0
 
@@ -60,24 +61,28 @@ def main():
 
 		out_s_1.append(state[2])
 		out_s_2.append(state[6])
-		time.append(env.t)
+		time_list.append(env.t)
 		control_s_1.append(action[0])
 		control_s_2.append(action[1])
+		demand_list.append(demand[0])
 
 		if done:
 			break
 
 	print('Score: {}'.format(score))
 
-	plt.subplot(311)
-	plt.plot(time, out_s_1)
-	plt.plot(time, out_s_2)
+	plt.subplot(411)
+	plt.plot(time_list, out_s_1)
+	plt.plot(time_list, out_s_2)
 
-	plt.subplot(312)
-	plt.plot(time, control_s_1)
+	plt.subplot(412)
+	plt.plot(time_list, control_s_1)
 
-	plt.subplot(313)
-	plt.plot(time, control_s_2)
+	plt.subplot(413)
+	plt.plot(time_list, control_s_2)
+
+	plt.subplot(414)
+	plt.plot(time_list, demand_list)
 
 	plt.show()
 

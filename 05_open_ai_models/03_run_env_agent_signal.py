@@ -53,7 +53,8 @@ def main():
 	out_tieline = [0]
 	control_s_1 = [0]
 	control_s_2 = [0]
-	time = [0]
+	demand_list = [0]
+	time_list = [0]
 
 	score = 0
 
@@ -71,7 +72,8 @@ def main():
 		out_s_1.append(state[2])
 		out_s_2.append(state[6])
 		out_tieline.append(state[3])
-		time.append(env.t)
+		demand_list.append(demand[0])
+		time_list.append(env.t)
 
 		# Given the current state observation take an action
 		action = agent.act(state, (env.t, env.t + env.t_delta))
@@ -84,18 +86,21 @@ def main():
 
 	print('Score: {}'.format(score))
 
-	plt.subplot(411)
-	plt.plot(time, out_s_1)
-	plt.plot(time, out_s_2)
+	plt.subplot(511)
+	plt.plot(time_list, out_s_1)
+	plt.plot(time_list, out_s_2)
+	
+	plt.subplot(512)
+	plt.plot(time_list, out_tieline)
 
-	plt.subplot(412)
-	plt.plot(time, out_tieline)
+	plt.subplot(513)
+	plt.plot(time_list, control_s_1)
+	
+	plt.subplot(514)
+	plt.plot(time_list, control_s_2)
 
-	plt.subplot(413)
-	plt.plot(time, control_s_1)
-
-	plt.subplot(414)
-	plt.plot(time, control_s_2)
+	plt.subplot(515)
+	plt.plot(time_list, demand_list)
 
 	plt.show()
 
