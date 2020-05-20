@@ -25,7 +25,7 @@ from train.ddpg_train import ddpg_train
 
 # main function
 def main():
-	
+
 	# spin up environment
 	env = TwoAreaPowerSystemEnv()
 	env.seed(2)
@@ -33,7 +33,9 @@ def main():
 	# spin up agent
 	agent = DdpgController(state_size=7, action_size=2, random_seed=2)
 
-	# REMOVE IF NOT CONTINUING TRAINING
+	####################################################
+	# COMMENT OUT IF NOT CONTINUING TRAINING
+	####################################################
 	# Load the actor and critic networks
 	#agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
 	#agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
@@ -44,13 +46,6 @@ def main():
 	# train the agent
 	scores = ddpg_train(env, agent, signal)
 
-	# plot the outcome from training the agent
-	fig = plt.figure()
-	ax = fig.add_subplot(111)
-	plt.plot(np.arange(1, len(scores)+1), scores)
-	plt.xlabel('Episode')
-	plt.ylabel('Score')
-	plt.show()
 
 
 if __name__ == '__main__':
