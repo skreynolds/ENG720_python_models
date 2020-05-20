@@ -6,7 +6,7 @@ import pickle
 from collections import deque
 
 # import utility functions
-from utils import *
+from train.utils import *
 
 def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 
@@ -101,7 +101,7 @@ def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 			pik_file_path = './progress_plots/periodic_plot/pickledata/plot_{}.pkl'.format(i_episode)
 			capture_agent_progress(time_list,
 								   out_s_1, out_s_2,
-								   control_s_1, control_s_2
+								   control_s_1, control_s_2,
 								   out_tieline,
 								   demand_list,
 								   png_plot_file_path,
@@ -110,7 +110,7 @@ def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 			# Plot the reward vs episode
 			png_plot_file_path = './progress_plots/periodic_reward/pngplot/plot_{}.png'.format(i_episode)
 			pik_file_path = './progress_plots/periodic_reward/pickledata/plot_{}.pkl'.format(i_episode)
-			captures_agent_score_progress(scores, png_plot_file_path, pik_file_path)
+			capture_agent_score_progress(scores, png_plot_file_path, pik_file_path)
 
 			# save agent progress
 			actor_file_path = './saved_agents/periodic_agent_save/checkpoint_actor_{}.pth'.format(i_episode)
@@ -131,7 +131,7 @@ def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 			pik_file_path = './progress_plots/highest_average_score_plot/pickledata/plot_{}.pkl'.format(i_episode)
 			capture_agent_progress(time_list,
 								   out_s_1, out_s_2,
-								   control_s_1, control_s_2
+								   control_s_1, control_s_2,
 								   out_tieline,
 								   demand_list,
 								   png_plot_file_path,
@@ -140,11 +140,11 @@ def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 			# Plot the reward vs episode
 			png_plot_file_path = './progress_plots/highest_average_score_reward/pngplot/plot_{}.png'.format(i_episode)
 			pik_file_path = './progress_plots/highest_average_score_reward/pickledata/plot_{}.pkl'.format(i_episode)
-			captures_agent_score_progress(scores, png_plot_file_path, pik_file_path)
+			capture_agent_score_progress(scores, png_plot_file_path, pik_file_path)
 
 			# save agent progress
-			actor_file_path = './saved_agents/highest_average_score/checkpoint_actor_{}.pth'.format(i_episode)
-			critic_file_path = './saved_agents/highest_average_score/checkpoint_critic_{}.pth'.format(i_episode)
+			actor_file_path = './saved_agents/highest_average_score_save/checkpoint_actor_{}.pth'.format(i_episode)
+			critic_file_path = './saved_agents/highest_average_score_save/checkpoint_critic_{}.pth'.format(i_episode)
 			torch.save(agent.actor_local.state_dict(), actor_file_path)
 			torch.save(agent.critic_local.state_dict(), critic_file_path)
 
@@ -163,7 +163,7 @@ def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 	pik_file_path = './progress_plots/periodic_plot/pickledata/zz_plot_final.pkl'
 	capture_agent_progress(time_list,
 						   out_s_1, out_s_2,
-						   control_s_1, control_s_2
+						   control_s_1, control_s_2,
 						   out_tieline,
 						   demand_list,
 						   png_plot_file_path,
@@ -172,7 +172,7 @@ def ddpg_train(env, agent, signal, n_episodes=2000, print_every=100):
 	# Plot the reward vs episode
 	png_plot_file_path = './progress_plots/periodic_plot/pngplot/zz_plot_final.png'
 	pik_file_path = './progress_plots/periodic_plot/pickledata/zz_plot_final.pkl'
-	captures_agent_score_progress(scores, png_plot_file_path, pik_file_path)
+	capture_agent_score_progress(scores, png_plot_file_path, pik_file_path)
 
 	# save agent progress
 	actor_file_path = './saved_agents/periodic_agent_save/zz_checkpoint_actor_final.pth'
