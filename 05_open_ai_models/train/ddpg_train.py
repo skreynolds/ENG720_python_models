@@ -98,7 +98,7 @@ def ddpg_train(env, agent, signal, n_episodes=10000, print_every=100):
 			plt.savefig('plot_{}.png'.format(i_episode))
 			plt.clf()
 
-		if np.mean(scores_deque) > -100.0:
-			break
+		#if np.mean(scores_deque) > 2000.0:
+		#	break
 
 	return scores
