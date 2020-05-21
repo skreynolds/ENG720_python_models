@@ -1,6 +1,7 @@
 
 #Import libraries required for modelling
 import numpy as np
+import pickle
 from scipy import integrate
 import matplotlib.pyplot as plt
 
@@ -120,6 +121,8 @@ def main():
     # initialise empty list to store simulation output
     out_s_1 = [x_freq_1]
     out_s_2 = [x_freq_2]
+    control_s_1 = [x_control_sys[0]]
+    control_s_2 = [x_control_sys[1]]
 
     # initialise the time
     t = 0
@@ -186,14 +189,26 @@ def main():
         # save the output
         out_s_1.append(x_freq_1)
         out_s_2.append(x_freq_2)
+        control_s_1.append(x_control[0])
+        control_s_2.append(x_control[1])
 
         # ste t to the next time step
         t = t_step
         time.append(t)
 
+    plt.subplot(311)
     plt.plot(time, out_s_1)
     plt.plot(time, out_s_2)
+    plt.subplot(312)
+    plt.plot(time, control_s_1)
+    plt.subplot(313)
+    plt.plot(time, control_s_2)
     plt.show()
+
+    dump = [time, out_s_1, out_s_2, control_s_1, control_s_2]
+
+    with open('dump.pkl', 'wb') as f:
+        pickle.dump(dump, f)
 
 # Execute the main() function if run from the terminal
 if __name__ == '__main__':
