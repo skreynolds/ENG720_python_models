@@ -22,9 +22,9 @@ The reward function for this experiment is defined as:
 if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
 	reward = -50*(abs(self.state[2]) + abs(self.state[6]))
 else:
-	reward = 0.2 - 10*( abs(self.state[2]) + abs(control_sig_1)
-					  + abs(self.state[3]) + abs(control_sig_2)
-					  + abs(self.state[6]) )
+    reward = 0.2 - 10*( abs(self.state[2]) + abs(control_sig_1)
+                      + abs(self.state[3]) + abs(control_sig_2)
+                      + abs(self.state[6]) )
 
 return np.array(self.state), reward, done, {}
 ```
