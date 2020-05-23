@@ -1,8 +1,11 @@
 <img src="https://fundraising.blackbaud.com.au/wp-content/uploads/2016/08/CDU-LOGO-RGB-LHS-1200x628.jpg" alt="Charles Darwin University - ENG720 Honours Thesis" width="200" />
 
-# Experiment 01
+# Experiment 10
 ## Intent
-Initial experimentation to understand if the environment, agent, and ddpg training algorithm has been implemented correctly.
+Reducing the control action multiplier further in experiment 9 did not improve results.
+
+Part of the ddpg algorithm is to overlay the control signals from the agent with an OU noise process, to help the agent explore the state-action space and reveal hidden optimal policies. This experiment will reduce the size of the stochastic noise that is currently being added to the control signal. This was motivated by a visual review of agent control signals from all previous experiments, which showed that the stochastic part of the control signal seemed to be large and whilst it encourages the agent to undertaken lots of exploration, might be causing the agent to converge to sub-optimal policies in the later stages of training.
+
 
 ## Hyperparameters
 The specification of the hyperparamaters for the ddpg training algorithm are as follows:
@@ -19,33 +22,31 @@ WEIGHT_DECAY = 0
 ## Reward Function
 The reward function for this experiment is defined as:
 ```python
-if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
-    reward = -50*(abs(self.state[2]) + abs(self.state[6]))
-else:
-    reward = 0.2 - 10*( abs(self.state[2]) + abs(control_sig_1)
-                      + abs(self.state[3]) + abs(control_sig_2)
-                      + abs(self.state[6]) )
-
-return np.array(self.state), reward, done, {}
+reward =  - ( 8*abs(self.state[2])
+            + 4*abs(self.state[3])
+            + 8*abs(self.state[6])
+            + 10*abs(control_sig_1)
+            + 10*abs(control_sig_2) )
 ```
 
 ## Termination Condition
 The episode was terminated according to the following condition:
 ```python
-done = (self.t > self.t_max) or (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75)
+done = (self.t > self.t_max)
 ```
 
 ## OU Noise Process Parameters
 The OU noise parameters were set as follows:
 ```
 mu=0.0
-theta=0.15
-sigma=0.2
+theta=0.015
+sigma=0.02
 ```
 
 ## Action Signal Scaling
-The action signals were not scaled for this experiment.
-
+```python
+control_sig_1, control_sig_2 = 0.01*action[0], 0.01*action[1]
+```
 
 ## Cumulative Reward Over Time
 
