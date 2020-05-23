@@ -30,8 +30,6 @@ else:
     reward = 1.2 - 0.1*( abs(self.state[2]) + 2*abs(control_sig_1)
                        + abs(self.state[3]) + 2*abs(control_sig_2)
                        + abs(self.state[6]) )
-
-return np.array(self.state), reward, done, {}
 ```
 
 ## Termination Condition

@@ -4,7 +4,7 @@
 ## Intent
 Experiment 3 was not successful in arriving at a policy that could control frequency. The agent still displayed a tendency to let the frequency extend above the 0.75 tripping boundary.
 
-The reward function was was modified to give the agent a larger penalty for tripping the system, and a greater reward for every time step that the agent
+This experiment saw the reward function modified to give the agent a larger penalty for tripping the system, and a greater reward for every time step that the agent remained in the allowable region of operation.
 
 
 ## Hyperparameters
@@ -30,8 +30,6 @@ if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
                            + abs(self.state[6])
                            + abs(control_sig_1)
                            + abs(control_sig_2) )
-
-return np.array(self.state), reward, done, {}
 ```
 
 ## Termination Condition

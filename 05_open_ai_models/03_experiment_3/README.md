@@ -30,8 +30,6 @@ if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
                                + abs(self.state[6])
                                + 10*abs(control_sig_1)
                                + 10*abs(control_sig_2) )
-
-return np.array(self.state), reward, done, {}
 ```
 
 ## Termination Condition
