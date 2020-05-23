@@ -20,7 +20,7 @@ WEIGHT_DECAY = 0
 The reward function for this experiment is defined as:
 ```python
 if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
-	reward = -50*(abs(self.state[2]) + abs(self.state[6]))
+    reward = -50*(abs(self.state[2]) + abs(self.state[6]))
 else:
     reward = 0.2 - 10*( abs(self.state[2]) + abs(control_sig_1)
                       + abs(self.state[3]) + abs(control_sig_2)
@@ -30,7 +30,7 @@ return np.array(self.state), reward, done, {}
 ```
 
 ## Termination Condition
-The episode was terminated
+The episode was terminated according to the following condition:
 ```python
 done = (self.t > self.t_max) or (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75)
 ```
@@ -47,7 +47,7 @@ sigma=0.2
 The action signals were not scaled for this experiment.
 
 
-## Cumulative Reawrd Over Time
+## Cumulative Reward Over Time
 
 
 ## Best Agent Performance
