@@ -43,7 +43,10 @@ sigma=0.2
 ```
 
 ## Action Signal Scaling
-The action signals were not scaled for this experiment.
+The action signals were clipped as follows:
+```python
+control_sig_1, control_sig_2 = 0.1*action[0], 0.1*action[1]
+```
 
 
 ## Cumulative Reward Over Time
