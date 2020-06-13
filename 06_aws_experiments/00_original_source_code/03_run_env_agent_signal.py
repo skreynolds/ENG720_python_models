@@ -2,7 +2,11 @@
 
 # import required libraries
 import gym
+import matplotlib
+plt.use("Agg")
+
 import numpy as np
+
 import matplotlib.pyplot as plt
 
 from gym import spaces
