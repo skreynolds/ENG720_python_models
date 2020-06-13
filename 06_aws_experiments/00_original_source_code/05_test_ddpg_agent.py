@@ -4,7 +4,7 @@
 
 # import required libraries
 import matplotlib
-plt.use("Agg")
+matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 

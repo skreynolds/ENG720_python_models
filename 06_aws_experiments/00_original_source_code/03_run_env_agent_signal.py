@@ -3,7 +3,7 @@
 # import required libraries
 import gym
 import matplotlib
-plt.use("Agg")
+matplotlib.use("Agg")
 
 import numpy as np
 
