@@ -120,7 +120,8 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		"""
 
 		# store the received control signals
-		control_sig_1, control_sig_2 = 0.1*action[0], 0.1*action[1]
+		control_sig_1, control_sig_2 = 0.02*action[0], 0.02*action[1]
+		#control_sig_1, control_sig_2 = action[0], action[1]
 
 		# store the received power demand signals
 		power_demand_sig_1, power_demand_sig_2 = demand
@@ -150,19 +151,15 @@ class TwoAreaPowerSystemEnv(gym.Env):
 		self.t += self.t_delta
 
 		# set the done status if the time period has elapsed
-		done = (self.t > self.t_max) or (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75)
+		done = (self.t > self.t_max)
 		done = bool(done)
 
 		# provide the reward signal
-		
-		if (abs(self.state[2]) > 0.75) or (abs(self.state[6]) > 0.75):
-			reward = -2050*(abs(self.state[2]) + abs(self.state[6]))
-		else:
-			reward = 1.2 - 0.1*( abs(self.state[2])
-				  	 	   	   + abs(self.state[3]) 
-				  	 	   	   + abs(self.state[6]) 
-						 + 10*abs(control_sig_1)
-						 + 10*abs(control_sig_2) )
+		reward =  - ( 8*abs(self.state[2])
+			  	 	+ 4*abs(self.state[3]) 
+			  	 	+ 8*abs(self.state[6]) 
+					+ 5*abs(control_sig_1)
+					+ 5*abs(control_sig_2) )
 		
 		return np.array(self.state), reward, done, {}
 
