@@ -41,7 +41,8 @@ class Actor(nn.Module):
 class Critic(nn.Module):
     """Critic (Value) Model."""
 
-    def __init__(self, state_size, action_size, seed, fcs1_units=256, fc2_units=256, fc3_units=128):
+    def __init__(self, state_size, action_size,
+                 seed, fcs1_units=256, fc2_units=256, fc3_units=128):
         """Initialize parameters and build model.
         Params
         ======
@@ -66,7 +67,10 @@ class Critic(nn.Module):
         self.fc4.weight.data.uniform_(-3e-3, 3e-3)
 
     def forward(self, state, action):
-        """Build a critic (value) network that maps (state, action) pairs -> Q-values."""
+        """
+        Build a critic (value) network that maps
+        (state, action) pairs -> Q-values.
+        """
         xs = F.leaky_relu(self.fcs1(state))
         x = torch.cat((xs, action), dim=1)
         x = F.leaky_relu(self.fc2(x))

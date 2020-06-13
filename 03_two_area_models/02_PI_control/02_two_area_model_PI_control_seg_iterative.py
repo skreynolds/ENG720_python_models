@@ -123,6 +123,7 @@ def main():
     out_s_2 = [x_freq_2]
     control_s_1 = [x_control_sys[0]]
     control_s_2 = [x_control_sys[1]]
+    demand = [0]
 
     # initialise the time
     t = 0
@@ -191,6 +192,7 @@ def main():
         out_s_2.append(x_freq_2)
         control_s_1.append(x_control[0])
         control_s_2.append(x_control[1])
+        demand.append(del_p_L_1_func(t))
 
         # ste t to the next time step
         t = t_step
@@ -205,7 +207,7 @@ def main():
     plt.plot(time, control_s_2)
     plt.show()
 
-    dump = [time, out_s_1, out_s_2, control_s_1, control_s_2]
+    dump = [time, out_s_1, out_s_2, control_s_1, control_s_2, demand]
 
     with open('dump.pkl', 'wb') as f:
         pickle.dump(dump, f)

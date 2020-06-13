@@ -13,7 +13,7 @@ BUFFER_SIZE = int(1e6)  # replay buffer size
 BATCH_SIZE = 256        # minibatch size
 GAMMA = 0.99            # discount factor
 TAU = 1e-3              # for soft update of target parameters
-LR_ACTOR = 1e-4         # learning rate of the actor 
+LR_ACTOR = 1e-4         # learning rate of the actor
 LR_CRITIC = 3e-4        # learning rate of the critic
 WEIGHT_DECAY = 0   		# L2 weight decay
 
@@ -21,10 +21,10 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class DdpgController():
     """Interacts with and learns from the environment."""
-    
+
     def __init__(self, state_size, action_size, random_seed):
         """Initialize an Agent object.
-        
+
         Params
         ======
             state_size (int): dimension of each state
@@ -43,16 +43,21 @@ class DdpgController():
         # Critic Network (w/ Target Network)
         self.critic_local = Critic(state_size, action_size, random_seed).to(device)
         self.critic_target = Critic(state_size, action_size, random_seed).to(device)
-        self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
+        self.critic_optimizer = optim.Adam(self.critic_local.parameters(),
+                                           lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
 
         # Noise process
         self.noise = OUNoise(action_size, random_seed)
 
         # Replay memory
         self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
-    
+
     def step(self, state, action, reward, next_state, done):
-        """Save experience in replay memory, and use random sample from buffer to learn."""
+        """
+        Save experience in replay memory, and use random
+        sample from buffer to learn.
+        """
+
         # Save experience / reward
         self.memory.add(state, action, reward, next_state, done)
 
@@ -76,16 +81,17 @@ class DdpgController():
         self.noise.reset()
 
     def learn(self, experiences, gamma):
-        """Update policy and value parameters using given batch of experience tuples.
-        Q_targets = r + γ * critic_target(next_state, actor_target(next_state))
+        """Update policy and value parameters using given batch of
+        experience tuples. Q_targets = r + gamma * critic_target(next_state,
+        actor_target(next_state))
         where:
             actor_target(state) -> action
             critic_target(state, action) -> Q-value
 
         Params
         ======
-            experiences (Tuple[torch.Tensor]): tuple of (s, a, r, s', done) tuples 
-            gamma (float): discount factor
+            experiences (Tuple[torch.Tensor]): tuple of (s, a, r, s', done)
+            tuples gamma (float): discount factor
         """
         states, actions, rewards, next_states, dones = experiences
 
@@ -114,20 +120,22 @@ class DdpgController():
 
         # ----------------------- update target networks ----------------------- #
         self.soft_update(self.critic_local, self.critic_target, TAU)
-        self.soft_update(self.actor_local, self.actor_target, TAU)                     
+        self.soft_update(self.actor_local, self.actor_target, TAU)
 
     def soft_update(self, local_model, target_model, tau):
         """Soft update model parameters.
-        θ_target = τ*θ_local + (1 - τ)*θ_target
+        theta_target = tau*theta_local + (1 - tau)*theta_target
 
         Params
         ======
             local_model: PyTorch model (weights will be copied from)
             target_model: PyTorch model (weights will be copied to)
-            tau (float): interpolation parameter 
+            tau (float): interpolation parameter
         """
-        for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
-            target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)
+        for target_param, local_param in zip(target_model.parameters(),
+                                             local_model.parameters()):
+            target_param.data.copy_(tau*local_param.data +
+                                        (1.0-tau)*target_param.data)
 
 class OUNoise:
     """Ornstein-Uhlenbeck process."""
@@ -166,12 +174,12 @@ class ReplayBuffer:
         self.batch_size = batch_size
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
         self.seed = random.seed(seed)
-    
+
     def add(self, state, action, reward, next_state, done):
         """Add a new experience to memory."""
         e = self.experience(state, action, reward, next_state, done)
         self.memory.append(e)
-    
+
     def sample(self):
         """Randomly sample a batch of experiences from memory."""
         experiences = random.sample(self.memory, k=self.batch_size)
