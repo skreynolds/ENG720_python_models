@@ -3,12 +3,16 @@
 # NOTE: using this in an environment that has access to gym
 
 # import required libraries
+import matplotlib
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+
 import gym
 import random
 import torch
 import numpy as np
 from collections import deque
-import matplotlib.pyplot as plt
 
 # import the environment
 from env.TwoAreaPowerSystemEnv import TwoAreaPowerSystemEnv
