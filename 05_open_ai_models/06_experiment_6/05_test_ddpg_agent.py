@@ -5,6 +5,7 @@
 # import required libraries
 import gym
 import random
+import pickle
 import torch
 import numpy as np
 from collections import deque
@@ -85,6 +86,12 @@ def main():
 	plt.plot(time_list, demand_list)
 
 	plt.show()
+
+	ddpg_list = [time_list, out_s_1, out_s_2, control_s_1, control_s_2]
+
+	with open('ddpg_dump.pkl', 'wb') as f:
+		pickle.dump(ddpg_list, f)
+		
 
 if __name__ == '__main__':
 	main()

@@ -121,6 +121,7 @@ class TwoAreaPowerSystemEnv(gym.Env):
 
 		# store the received control signals
 		control_sig_1, control_sig_2 = 0.02*action[0], 0.02*action[1]
+		#control_sig_1, control_sig_2 = action[0], action[1]
 
 		# store the received power demand signals
 		power_demand_sig_1, power_demand_sig_2 = demand
