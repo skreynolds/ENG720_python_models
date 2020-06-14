@@ -70,6 +70,7 @@ def main():
 
         out_s_1.append(state[2])
         out_s_2.append(state[6])
+        out_tieline.append(state[3])
         control_s_1.append(action[0])
         control_s_2.append(action[1])
         demand_list.append(demand[0])
