@@ -49,7 +49,7 @@ def main():
     ####################################
     # implement the signal
     signal = StepSignal()
-    signal.reset(15, 'on', 0.02, 'off', 0.0)
+    signal.reset(15, 'on', 0.01, 'off', 0.0)
     ####################################
 
     # initialise empty list to store simulation output

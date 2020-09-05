@@ -17,7 +17,7 @@ import random
 
 from torch.utils.tensorboard import SummaryWriter
 
-def ddpg_train(env, agent, signal, n_episodes=10000, print_every=100):
+def ddpg_train(env, agent, signal, n_episodes=20000, print_every=100):
 
     writer = SummaryWriter()
 

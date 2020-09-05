@@ -73,8 +73,8 @@ class StepSignal():
 
     def stochastic_signal_step(self,
                                increment=0.001,
-                               min_sig=-0.02,
-                               max_sig=0.02):
+                               min_sig=-0.01,
+                               max_sig=0.01):
         # create random number
         rand_float = (random.random() - 0.5)/0.5
 

@@ -40,7 +40,7 @@ def main():
 
     # spin up the power demand signal
     signal = StepSignal()
-    signal.reset(15 , 'on', -0.01, 'off', 0.0)
+    signal.reset(5 , 'on', 0.01 , 'off', 0.0)
 
     # Load the actor and critic networks
     agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))

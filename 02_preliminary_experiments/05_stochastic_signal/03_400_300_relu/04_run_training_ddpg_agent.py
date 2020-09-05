@@ -42,8 +42,8 @@ def main():
     # COMMENT OUT IF NOT CONTINUING TRAINING
     ####################################################
     # Load the actor and critic networks
-    #agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
-    #agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
+    agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
+    agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
 
     # spin up the power demand signal
     signal = StepSignal()
