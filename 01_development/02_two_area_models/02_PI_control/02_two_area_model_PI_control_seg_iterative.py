@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # Setting up step function for power change
 # Note that for the purposes of DRL this could be any signal
 def del_p_L_1_func(t):
-    if (t < 1):
+    if (t < 15):
         del_p_L = 0.00
     else:
         del_p_L = 0.01
