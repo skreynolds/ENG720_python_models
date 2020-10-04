@@ -86,7 +86,7 @@ def performance_evaluation(pik):
 
 # main function
 def main():
-    '''
+
     magnitude = ['neg', 'pos']
     duration = [5, 10, 15, 20, 25]
 
@@ -98,12 +98,7 @@ def main():
 
             print('Performance evaluation for {} {}'.format(mag,dur))
             performance_evaluation(ddpg_results)
-    '''
-    with open('zz_plot_final.pkl', 'rb') as f:
-                ddpg_results = pickle.load(f)
-
-    print('Performance evaluation for PID')
-    performance_evaluation(ddpg_results)
+    
     '''
     df = pandas.DataFrame(ddpg_results).T
     df.to_csv("verification.csv", sep=',', index=False)
