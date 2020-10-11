@@ -49,7 +49,7 @@ def main():
     ####################################
     # implement the signal
     signal = StepSignal()
-    signal.reset(1, 'on', 0.01, 'off', 0.0)
+    signal.reset(15, 'on', 0.01, 'off', 0.0)
     ####################################
 
     # initialise empty list to store simulation output
@@ -85,6 +85,8 @@ def main():
 
         control_s_1.append(action[0])
         control_s_2.append(action[1])
+
+        action /= 0.02
 
         if done:
             break
