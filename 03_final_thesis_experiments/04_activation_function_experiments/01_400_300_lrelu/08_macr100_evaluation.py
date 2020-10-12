@@ -20,8 +20,6 @@ def main():
     # Create the average list for plotting
     avg_list = np.asarray([np.mean(training_reward[(i-100):i]) for i in episode])
 
-    print(len(avg_list))
-    print(len(episode))
     print('The MACR100 at episode {}: {}'.format(episode[-1], avg_list[-1]))
     print('The best MACR100 during training is {} at episode {}'.
         format(max(avg_list), episode[np.argmax(avg_list)]))
